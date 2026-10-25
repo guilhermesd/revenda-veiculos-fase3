@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen(options =>
     options.AddSecurityDefinition("Bearer", bearerScheme);
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
-        [new OpenApiSecuritySchemeReference("Bearer", null, null)] = Array.Empty<string>()
+        [new OpenApiSecuritySchemeReference("Bearer", null, null)] = []
     });
 });
 var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is required.");
