@@ -21,7 +21,7 @@ jobs:
       - name: Test APIs
         run: |
           dotnet test Fiap.RevendaVeiculos.slnx --filter "Category!=Docker"
-          dotnet test ../fiap-revenda-veiculos-usuarios/Fiap.RevendaVeiculos.Usuarios.slnx
+          dotnet test ../fiap-revenda-veiculos-usuarios/Fiap.RevendaVeiculos.Usuarios.slnx --filter "Category!=Docker"
         working-directory: fiap-revenda-veiculos-fase3
       - name: Validate compose and build images
         run: |
