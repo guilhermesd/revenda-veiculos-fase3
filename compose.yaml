@@ -1,0 +1,27 @@
+include:
+  - path: ../fiap-revenda-veiculos-usuarios/compose.yaml
+
+services:
+  api-vendas:
+    build: .
+    ports: ["8080:8080"]
+    environment:
+      ConnectionStrings__Mongo: mongodb://mongo-vendas:27017
+      Mongo__DatabaseName: revenda_vendas
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Webhook__Secret: ${WEBHOOK_SECRET}
+    depends_on:
+      mongo-vendas:
+        condition: service_healthy
+  mongo-vendas:
+    image: mongo:8.0
+    volumes: ["mongo-vendas-data:/data/db"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+volumes:
+  mongo-vendas-data:

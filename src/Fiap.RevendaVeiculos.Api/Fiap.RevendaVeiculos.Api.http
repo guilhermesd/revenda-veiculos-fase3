@@ -1,0 +1,6 @@
+@Fiap.RevendaVeiculos.Api_HostAddress = http://localhost:5157
+
+GET {{Fiap.RevendaVeiculos.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

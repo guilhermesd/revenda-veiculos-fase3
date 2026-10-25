@@ -1,0 +1,21 @@
+# .NET build artifacts
+[Bb]in/
+[Oo]bj/
+TestResults/
+coverage/
+
+# IDE and local settings
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Local secrets and environment files
+.env
+.env.*
+!*.example
+
+# Docker and OS files
+*.log
+Thumbs.db
+.DS_Store

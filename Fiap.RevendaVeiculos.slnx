@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Fiap.RevendaVeiculos.Api/Fiap.RevendaVeiculos.Api.csproj" />
+    <Project Path="src/Fiap.RevendaVeiculos.Application/Fiap.RevendaVeiculos.Application.csproj" />
+    <Project Path="src/Fiap.RevendaVeiculos.Domain/Fiap.RevendaVeiculos.Domain.csproj" />
+    <Project Path="src/Fiap.RevendaVeiculos.Infrastructure/Fiap.RevendaVeiculos.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Fiap.RevendaVeiculos.IntegrationTests/Fiap.RevendaVeiculos.IntegrationTests.csproj" />
+    <Project Path="tests/Fiap.RevendaVeiculos.UnitTests/Fiap.RevendaVeiculos.UnitTests.csproj" />
+  </Folder>
+</Solution>

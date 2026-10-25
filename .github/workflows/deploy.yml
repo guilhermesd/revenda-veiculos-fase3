@@ -1,0 +1,43 @@
+name: ci-cd-simulado
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: fiap-revenda-veiculos-fase3
+      - uses: actions/checkout@v4
+        with:
+          repository: guilhermesd/revenda-veiculos-usuarios
+          path: fiap-revenda-veiculos-usuarios
+          token: ${{ secrets.CLIENTES_REPOSITORY_TOKEN || github.token }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Test APIs
+        run: |
+          dotnet test Fiap.RevendaVeiculos.slnx
+          dotnet test ../fiap-revenda-veiculos-usuarios/Fiap.RevendaVeiculos.Usuarios.slnx
+        working-directory: fiap-revenda-veiculos-fase3
+      - name: Validate compose and build images
+        run: |
+          cp .env.example .env
+          docker compose config
+          docker compose build
+          docker compose pull mongo-vendas mongo-usuarios
+        working-directory: fiap-revenda-veiculos-fase3
+      - name: Simulate deployment and validate four stopped containers
+        run: |
+          docker compose up --no-start
+          test "$(docker compose ps -aq | wc -l)" -eq 4
+          test "$(docker compose ps -aq --status created | wc -l)" -eq 4
+          docker compose ps -a
+        working-directory: fiap-revenda-veiculos-fase3
+      - name: Cleanup
+        if: always()
+        run: docker compose down --remove-orphans
+        working-directory: fiap-revenda-veiculos-fase3
