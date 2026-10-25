@@ -2,6 +2,14 @@
 
 API .NET 10 de veículos e vendas autenticadas. A compra usa o `sub` do JWT emitido pela API de Usuarios, cria pagamento pendente e é finalizada pelo webhook `PAID` ou `CANCELED`.
 
+## Regras de acesso
+
+Todas as rotas de veículos exigem JWT válido. `ADM` pode cadastrar, editar e listar veículos; `COMPRADOR` pode listar e iniciar compras. Cadastro/edição exigem `ADM`; compra exige `COMPRADOR`.
+
+### Swagger com Bearer
+
+Faça login na API de Usuários, copie `accessToken`, abra o Swagger de Vendas, clique em **Authorize** e cole somente o JWT no esquema **Bearer**. O Swagger enviará `Authorization: Bearer <token>`.
+
 ## Execução local
 
 Os dois repositórios devem ser diretórios irmãos:
@@ -31,6 +39,21 @@ Caso outro ambiente local já use essas portas, como a Fase 2, utilize `docker c
 ```powershell
 dotnet test Fiap.RevendaVeiculos.slnx
 ```
+
+> Para executar os testes de integração da categoria `Docker`, o Compose deve estar ativo. Caso não esteja, o teste exibirá o comando necessário: `docker compose -f compose.yaml -f compose.local-ports.yaml up -d --build`.
+
+### Teste de integração de papéis
+
+O teste de integração valida o ambiente completo: cadastro/login de usuários, autorização de `ADM` e `COMPRADOR`, cadastro, consulta, edição e listagens de veículos, compra e os webhooks `PAID` e `CANCELED`. Ele usa as APIs reais em `8180` e `8181`.
+
+```powershell
+docker compose -f compose.yaml -f compose.local-ports.yaml up -d --build
+dotnet test Fiap.RevendaVeiculos.slnx --filter "Category=Docker"
+```
+
+Se o Compose não estiver em execução, o teste falhará com uma mensagem orientando o comando acima. Para encerrar o ambiente ao final: `docker compose -f compose.yaml -f compose.local-ports.yaml down`.
+
+Cobertura do ciclo: cadastro e login de `ADM`/`COMPRADOR`, uso de JWT, criação, consulta, edição e listagem de veículos, bloqueio de criação por comprador, compra, webhook `PAID`, listagem de vendidos, webhook `CANCELED` e liberação do veículo.
 
 ## SDD
 

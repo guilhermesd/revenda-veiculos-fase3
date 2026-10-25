@@ -4,12 +4,26 @@ using Fiap.RevendaVeiculos.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var bearerScheme = new OpenApiSecurityScheme
+    {
+        Description = "Informe somente o token JWT. O Swagger adiciona automaticamente o prefixo Bearer.",
+        Name = "Authorization", In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http, Scheme = "bearer", BearerFormat = "JWT"
+    };
+    options.AddSecurityDefinition("Bearer", bearerScheme);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", null, null)] = Array.Empty<string>()
+    });
+});
 var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is required.");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

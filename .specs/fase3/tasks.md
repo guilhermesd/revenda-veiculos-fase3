@@ -10,3 +10,4 @@
 - [x] Criar workflow `deploy.yml`.
 - [x] Validar build, testes, Compose e quatro containers criados sem iniciar.
 - [x] Atualizar documentação e matriz de rastreabilidade.
+- [x] Criar teste de integração Docker para autorização por papel, compra e webhooks de pagamento.
