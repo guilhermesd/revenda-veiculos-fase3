@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen(options =>
         Type = SecuritySchemeType.Http, Scheme = "bearer", BearerFormat = "JWT"
     };
     options.AddSecurityDefinition("Bearer", bearerScheme);
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
     {
         [new OpenApiSecuritySchemeReference("Bearer", null, null)] = []
     });
